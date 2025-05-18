@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>LEARNX NOW</title>
+  <title>LEARNX NOW AI Chat</title>
   <style>
     body { font-family: Arial; padding: 20px; background: #f2f2f2; }
     input, button { padding: 10px; width: 300px; margin: 10px 0; }
@@ -18,14 +18,14 @@
     async function askAI() {
       const question = document.getElementById('question').value;
       const responseDiv = document.getElementById('response');
-      responseDiv.innerHTML = "Thinking...";
+      responseDiv.textContent = "Thinking...";
 
       try {
-        const response = await fetch("https://api.groq.com/openai/v1/chat/completions", {
+        const res = await fetch("https://api.groq.com/openai/v1/chat/completions", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-            "Authorization": "Bearer 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"  // Replace with your actual API key
+            "Authorization": "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"
           },
           body: JSON.stringify({
             model: "mixtral-8x7b-32768",
@@ -33,17 +33,10 @@
           })
         });
 
-        const data = await response.json();
-
-        if (data?.choices?.[0]?.message?.content) {
-          responseDiv.innerHTML = data.choices[0].message.content;
-        } else {
-          responseDiv.innerHTML = "❌ No valid answer found. Please try again.";
-          console.log("Debug Info:", data);
-        }
-      } catch (error) {
-        responseDiv.innerHTML = "❌ Error connecting to AI.";
-        console.error("Error:", error);
+        const data = await res.json();
+        responseDiv.textContent = data.choices?.[0]?.message?.content || "No answer found.";
+      } catch (err) {
+        responseDiv.textContent = "Error: " + err.message;
       }
     }
   </script>
